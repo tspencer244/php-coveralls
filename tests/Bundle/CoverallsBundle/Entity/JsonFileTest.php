@@ -221,23 +221,6 @@ class JsonFileTest extends ProjectTestCase
         return $this->object;
     }
 
-    // setParallel()
-
-    /**
-     * @test
-     */
-    public function shouldSetParallel()
-    {
-        $expected = true;
-
-        $obj = $this->object->setParallel($expected);
-
-        $this->assertSame($expected, $this->object->getParallel());
-        $this->assertSame($obj, $this->object);
-
-        return $this->object;
-    }
-
     // setFlagName()
 
     /**
