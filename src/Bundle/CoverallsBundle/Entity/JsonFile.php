@@ -36,13 +36,6 @@ class JsonFile extends Coveralls
     protected $serviceNumber;
 
     /**
-     * Parallel.
-     *
-     * @var bool
-     */
-    protected $parallel;
-
-    /**
      * Service event type (not documented).
      *
      * @var string
