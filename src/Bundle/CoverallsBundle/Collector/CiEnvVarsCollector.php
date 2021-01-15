@@ -42,22 +42,6 @@ class CiEnvVarsCollector
     public function __construct(Configuration $config)
     {
         $this->config = $config;
-    }    
-
-    /**
-     * Retrieve a value from $env or return null.
-     *
-     * @param $key
-     *
-     * @return null|string
-     */
-    private function getEnvSafe($key)
-    {
-        if (array_key_exists($key, $this->env)) {
-            return $this->env[$key];
-        }
-
-        return null;
     }
 
     // API
@@ -333,5 +317,21 @@ class CiEnvVarsCollector
         }
 
         return $this;
+    }
+
+    /**
+     * Retrieve a value from $env or return null.
+     *
+     * @param $key
+     *
+     * @return null|string
+     */
+    private function getEnvSafe($key)
+    {
+        if (array_key_exists($key, $this->env)) {
+            return $this->env[$key];
+        }
+
+        return null;
     }
 }
