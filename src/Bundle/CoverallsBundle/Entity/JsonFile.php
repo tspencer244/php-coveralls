@@ -319,20 +319,6 @@ class JsonFile extends Coveralls
     }
 
     /**
-     * Set parallel.
-     *
-     * @param string $parallel parallel
-     *
-     * @return $this
-     */
-    public function setParallel($parallel)
-    {
-        $this->parallel = $parallel;
-
-        return $this;
-    }
-
-    /**
      * Return parallel.
      *
      * @return null|bool
