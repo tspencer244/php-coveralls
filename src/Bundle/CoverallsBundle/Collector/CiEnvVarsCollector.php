@@ -42,6 +42,22 @@ class CiEnvVarsCollector
     public function __construct(Configuration $config)
     {
         $this->config = $config;
+    }    
+
+    /**
+     * Retrieve a value from $env or return null.
+     *
+     * @param $key
+     *
+     * @return null|string
+     */
+    private function getEnvSafe($key)
+    {
+        if (array_key_exists($key, $this->env)) {
+            return $this->env[$key];
+        }
+
+        return null;
     }
 
     // API
@@ -112,35 +128,6 @@ class CiEnvVarsCollector
     }
 
     /**
-     * Fill Buildkite CI.
-     *
-     * "BUILDKITE", "BUILDKITE_BUILD_NUMBER" must be set.
-     *
-     * @return $this
-     */
-    protected function fillBuildkite()
-    {
-        if (isset($this->env['BUILDKITE']) && $this->env['BUILDKITE'] && isset($this->env['BUILDKITE_BUILD_NUMBER'])) {
-            $this->env['CI_NAME'] = 'Buildkite';
-            $this->env['CI_BUILD_NUMBER'] = $this->getEnvSafe('BUILDKITE_BUILD_NUMBER');
-            $this->env['CI_JOB_ID'] = $this->getEnvSafe('BUILDKITE_BUILD_ID');
-            $this->env['CI_BRANCH'] = $this->getEnvSafe('BUILDKITE_BRANCH');
-            $this->env['CI_BUILD_URL'] = $this->getEnvSafe('BUILDKITE_BUILD_URL');
-            $this->env['CI_PULL_REQUEST'] = $this->getEnvSafe('BUILDKITE_PULL_REQUEST');
-
-            // backup
-            $this->readEnv['BUILDKITE'] = $this->getEnvSafe('BUILDKITE');
-            $this->readEnv['BUILDKITE_BUILD_NUMBER'] = $this->getEnvSafe('BUILDKITE_BUILD_NUMBER');
-            $this->readEnv['BUILDKITE_BUILD_ID'] = $this->getEnvSafe('BUILDKITE_BUILD_ID');
-            $this->readEnv['BUILDKITE_BRANCH'] = $this->getEnvSafe('BUILDKITE_BRANCH');
-            $this->readEnv['BUILDKITE_BUILD_URL'] = $this->getEnvSafe('BUILDKITE_BUILD_URL');
-            $this->readEnv['BUILDKITE_PULL_REQUEST'] = $this->getEnvSafe('BUILDKITE_PULL_REQUEST');
-        }
-
-        return $this;
-    }
-
-    /**
      * Fill CircleCI environment variables.
      *
      * "CIRCLECI", "CIRCLE_BUILD_NUM" must be set.
@@ -185,6 +172,35 @@ class CiEnvVarsCollector
             $this->readEnv['APPVEYOR_REPO_BRANCH'] = $this->env['APPVEYOR_REPO_BRANCH'];
             $this->readEnv['APPVEYOR_PULL_REQUEST_NUMBER'] = $this->env['APPVEYOR_PULL_REQUEST_NUMBER'];
             $this->readEnv['CI_NAME'] = $this->env['CI_NAME'];
+        }
+
+        return $this;
+    }
+
+    /**
+     * Fill Buildkite CI.
+     *
+     * "BUILDKITE", "BUILDKITE_BUILD_NUMBER" must be set.
+     *
+     * @return $this
+     */
+    protected function fillBuildkite()
+    {
+        if (isset($this->env['BUILDKITE']) && $this->env['BUILDKITE'] && isset($this->env['BUILDKITE_BUILD_NUMBER'])) {
+            $this->env['CI_NAME'] = 'Buildkite';
+            $this->env['CI_BUILD_NUMBER'] = $this->getEnvSafe('BUILDKITE_BUILD_NUMBER');
+            $this->env['CI_JOB_ID'] = $this->getEnvSafe('BUILDKITE_BUILD_ID');
+            $this->env['CI_BRANCH'] = $this->getEnvSafe('BUILDKITE_BRANCH');
+            $this->env['CI_BUILD_URL'] = $this->getEnvSafe('BUILDKITE_BUILD_URL');
+            $this->env['CI_PULL_REQUEST'] = $this->getEnvSafe('BUILDKITE_PULL_REQUEST');
+
+            // backup
+            $this->readEnv['BUILDKITE'] = $this->getEnvSafe('BUILDKITE');
+            $this->readEnv['BUILDKITE_BUILD_NUMBER'] = $this->getEnvSafe('BUILDKITE_BUILD_NUMBER');
+            $this->readEnv['BUILDKITE_BUILD_ID'] = $this->getEnvSafe('BUILDKITE_BUILD_ID');
+            $this->readEnv['BUILDKITE_BRANCH'] = $this->getEnvSafe('BUILDKITE_BRANCH');
+            $this->readEnv['BUILDKITE_BUILD_URL'] = $this->getEnvSafe('BUILDKITE_BUILD_URL');
+            $this->readEnv['BUILDKITE_PULL_REQUEST'] = $this->getEnvSafe('BUILDKITE_PULL_REQUEST');
         }
 
         return $this;
@@ -255,21 +271,5 @@ class CiEnvVarsCollector
         }
 
         return $this;
-    }
-
-    /**
-     * Retrieve a value from $env or return null.
-     *
-     * @param $key
-     *
-     * @return null|string
-     */
-    private function getEnvSafe($key)
-    {
-        if (array_key_exists($key, $this->env)) {
-            return $this->env[$key];
-        }
-
-        return null;
     }
 }
